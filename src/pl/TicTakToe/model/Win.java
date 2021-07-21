@@ -22,7 +22,7 @@ public class Win implements Winnable {
      *
      * @return boolean
      */
-    private static boolean checkHorizontally() {
+    private static boolean checkHorizontally() {    // ta metoda ma złożoność obliczeniową O(n^2), bo porównujesz każdy element z każdym. wystarczy, że jeden się będzie różnił, nie musisz sprawdzać wszystkich.
         String first;
         int sameItem = 0;
         for (int y = 0; y < BoardModel.HEIGHT; y++) {
@@ -98,7 +98,7 @@ public class Win implements Winnable {
         return true;
     }
 
-    /**
+    /** // otototo mniej więcej o coś takiego chodziło, ale dla wszystkich elementów, a niekoniecznie tylko dwóch...
      * Sprawdza czy pierwszy element jest różny od kolejnego podanego na podstawie współrzędnych
      * Jeżeli jest różny, lub null to w wyniku jest true
      *
@@ -111,4 +111,14 @@ public class Win implements Winnable {
         return BoardModel.ARRAY_BOARD[y][x] == null ||
                 !BoardModel.ARRAY_BOARD[y][x].equals(first);
     }
+    
+    
+    //ja bym zaproponował coś takiego:
+    private boolean isAllEqual(char[] charArray){
+        for (int i=1; i<charArray.length; i++){
+            if (charArray[i] != charArray[i-1])
+                return false;
+        } return true;
+    }
+    // jest uniwersalna metoda sprawdzająca, której trzeba tylko podać zbiór danych.
 }
