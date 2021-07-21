@@ -4,10 +4,12 @@ import pl.TicTakToe.model.BoardModel;
 import pl.TicTakToe.model.CharacterType;
 
 public class BoardView implements BoardDisplayable {
+
+    /**
+     * Wyświetla plansze do gry
+     */
     @Override
-    public void displayBoard(CharacterType character) {
-        System.out.println("Proszę podać współrzędne od A1 do C3 (wielkość liter nie ma znaczenia).");
-        System.out.println("Wyjście z programu po wpisaniu q.");
+    public void displayBoard() {
         String[][] tableForUser = getTableForUser();
         for (int y = 0; y < BoardModel.HEIGHT + 1; y++) {
             for (int x = 0; x < BoardModel.WIDTH + 1; x++) {
@@ -15,7 +17,28 @@ public class BoardView implements BoardDisplayable {
             }
             System.out.println();
         }
+    }
+
+    /**
+     * Wyświetla komendę dla użytkownika
+     *
+     * @param character {@link CharacterType}
+     */
+    @Override
+    public void displayCommand(CharacterType character) {
+        System.out.println("Proszę podać współrzędne od A1 do C3 (wielkość liter nie ma znaczenia).");
+        System.out.println("Wyjście z programu po wpisaniu q.");
         System.out.println("Teraz: " + character.getValue());
+    }
+
+    /**
+     * Wyświetla informacje o wygranym
+     *
+     * @param character {@link CharacterType}
+     */
+    @Override
+    public void displayWin(CharacterType character) {
+        System.out.println("Wygrał: " + character.getValue());
     }
 
     /**
