@@ -3,7 +3,7 @@ package pl.TicTakToe.model;
 public class BoardModel implements BoardSettable {
     public final static int HEIGHT = 3;
     public final static int WIDTH = 3;
-    public final static String[][] ARRAY_BOARD = new String[HEIGHT][WIDTH];     // To nie powinno być static. Lepiej zrobić do tego gettera i tak się do tego dostawać
+    public final static String[][] ARRAY_BOARD = new String[HEIGHT][WIDTH];     // To nie powinno być static. Lepiej zrobić do tego gettera i tak się do tego dostawać. Czemu to jest tablica stringów, a nie np charów? tu się powinien pojawić tylko pojedynczy znak
     private int paramX, paramY;
 
     @Override
