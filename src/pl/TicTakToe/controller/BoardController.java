@@ -8,37 +8,66 @@ import pl.TicTakToe.view.BoardView;
 import java.util.Scanner;
 
 public class BoardController {
-    private final BoardModel boardModel = new BoardModel(); // przy restarcie gry dobrze by było wyczyścić planszę, więc może nie powinna być final
+    private final BoardModel boardModel = new BoardModel(); // IntelliJ upiera się że powinno być final. Pewnie dlatego, że nowa gra, to ponowne uruchomienie programu.
     private final BoardView boardView = new BoardView();
     private final Win win = new Win();
 
     public void run() {
-        Scanner scan = new Scanner(System.in);
-        String coordinates = ""; //coordinates = scan.nextLine().toUpperCase(); jak pobierzesz dane od użytkownika przed pętlą, to możliwe, że nawet w nią nie będziesz musiał wchodzić
-        int i = 0;
-        CharacterType character;
-        while (!coordinates.equals("Q")) {
-            i++;
-            character = i % 2 == 0 ? CharacterType.NOUGHT : CharacterType.CROSS;
-            boardView.displayCommand(character);
-            coordinates = scan.nextLine().toUpperCase(); 
-            if (!continueGame(coordinates, character)) {
-                coordinates = "Q";
+        if (playGame(CharacterType.CROSS)) {
+            CharacterType character = CharacterType.NOUGHT;
+            while (playGame(character)) {
+                character = character == CharacterType.CROSS ? CharacterType.NOUGHT : CharacterType.CROSS;
             }
         }
     }
 
+    /**
+     * Rozpoczyna grę wyświetlając komendę i pobierając dane od użytkownika
+     *
+     * @param character {@link CharacterType}
+     * @return boolean
+     */
+    private boolean playGame(CharacterType character) {
+        Scanner scan = new Scanner(System.in);
+        boardView.displayCommand(character);
+        String coordinates = scan.nextLine().toUpperCase();
+        return continueGame(coordinates, character);
+    }
+
+    /**
+     * Decyduje o tym czy kontynuować grę
+     *
+     * @param coordinates {@link String}
+     * @param character   {@link CharacterType}
+     * @return boolean
+     */
     private boolean continueGame(String coordinates, CharacterType character) {
         if (coordinates.equals("Q")) {
             return false;
-        } else { // trzeba sprawdzić, czy występują 2 elementy, zanim się do nich odniesiesz
-            boardModel.setCoordinates(character, coordinates.charAt(0), coordinates.charAt(1)); // a jeśli się nie da, to trzeba by powtórzyć ruch
-            boardView.displayBoard();
-            if (win.isWin()) {
-                boardView.displayWin(character);
-                return false;
-            }
-            return true;
+        } else if (coordinates.length() == 2) {
+            return changeBoard(coordinates, character);
+        } else {
+            boardView.displayWrongCoordinates();
+            return playGame(character);
         }
+    }
+
+    /**
+     * Zmienia i wyświetla planszę
+     *
+     * @param coordinates {@link String}
+     * @param character   {@link CharacterType}
+     * @return boolean
+     */
+    private boolean changeBoard(String coordinates, CharacterType character) {
+        if (!boardModel.setCoordinates(character, coordinates.charAt(0), coordinates.charAt(1))) {
+            return playGame(character);
+        }
+        boardView.displayBoard(boardModel.getArrayBoard());
+        if (win.isWin(boardModel.getArrayBoard())) {
+            boardView.displayWin(character);
+            return false;
+        }
+        return true;
     }
 }

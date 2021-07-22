@@ -1,7 +1,6 @@
 package pl.TicTakToe.model;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import org.apache.commons.lang3.ArrayUtils;
 
 public class Validator {
 
@@ -11,29 +10,29 @@ public class Validator {
      * @param type char
      * @param x    char
      */
-    static void checkCoordinate(char type, char x) throws MyNewException {
-        String search = "";
+    static void checkCoordinate(char type, char x) throws WrongParameter {
+        char[] charArray = new char[]{};
         if (type == 'X') {
-            search = "[ABC]";
+            charArray = new char[]{'A', 'B', 'C'};
         } else if (type == 'Y') {
-            search = "[123]";
+            charArray = new char[]{ '1', '2', '3' };
         }
-        Pattern compiledPattern = Pattern.compile(search);  // jest taki żart programistyczny: miałem problem, postanowiłem rozwiązać go przy pomocy regexa. Teraz mam dwa problemy.
-        Matcher matcher = compiledPattern.matcher(String.valueOf(x)); // zamiast używać regexa, wrzuć ABC i 123 do dwóch tablic i użyj ArrayUtils.contains()
-        if (!matcher.find()) {
-            throw new MyNewException("Podano nieprawidłowy znak: " + x);
+        if (!ArrayUtils.contains(charArray, x)) { // poprawione na ArrayUtils.contains z regexp
+            throw new WrongParameter("Podano nieprawidłowy znak: " + x);
         }
     }
 
-    /** // ta metoda wygląda mi jakby dotyczyła planszy, powinna być zawarta w Board
+    /**
+     * // ta metoda wygląda mi jakby dotyczyła planszy, powinna być zawarta w Board
      * Sprawdza czy w tym polu już istnieje jakaś wartość
      *
+     * @param arrayBoard char[][]
      * @param x          int
      * @param y          int
      */
-    static void checkIfExists(int x, int y) throws MyNewException { // czy ta metoda musi rzucać wyjątkiem? nie wystarczy by zwracała true/false?
-        if (!(BoardModel.ARRAY_BOARD[y][x] == null)) {
-            throw new MyNewException("W tym polu już istnieje wartość");
+    static void checkIfExists(char[][] arrayBoard, int x, int y) throws WrongParameter { // czy ta metoda musi rzucać wyjątkiem? nie wystarczy by zwracała true/false?
+        if (!((int) arrayBoard[y][x] == 0)) {
+            throw new WrongParameter("W tym polu już istnieje wartość");
         }
     }
 }
