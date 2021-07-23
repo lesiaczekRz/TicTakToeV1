@@ -9,5 +9,5 @@ public interface BoardDisplayable {
 
     void displayWin(CharacterType character);
 
-    void displayWrongCoordinates();
+    void displayWrongCoordinates(String message);
 }

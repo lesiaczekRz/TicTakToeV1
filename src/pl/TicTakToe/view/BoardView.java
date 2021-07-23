@@ -45,10 +45,11 @@ public class BoardView implements BoardDisplayable {
 
     /**
      * Wyświetla komunikat w momencie podanie błędnych współrzędnych
+     * @param message String
      */
     @Override
-    public void displayWrongCoordinates() {
-        System.out.println("Podano błędne współrzędne.");
+    public void displayWrongCoordinates(String message) {
+        System.out.println(message);
     }
 
     /**

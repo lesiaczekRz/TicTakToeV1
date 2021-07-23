@@ -8,7 +8,7 @@ import pl.TicTakToe.view.BoardView;
 import java.util.Scanner;
 
 public class BoardController {
-    private final BoardModel boardModel = new BoardModel(); // IntelliJ upiera się że powinno być final. Pewnie dlatego, że nowa gra, to ponowne uruchomienie programu.
+    private final BoardModel boardModel = new BoardModel();
     private final BoardView boardView = new BoardView();
     private final Win win = new Win();
 
@@ -47,7 +47,7 @@ public class BoardController {
         } else if (coordinates.length() == 2) {
             return changeBoard(coordinates, character);
         } else {
-            boardView.displayWrongCoordinates();
+            boardView.displayWrongCoordinates("Podano błędne współrzędne");
             return playGame(character);
         }
     }

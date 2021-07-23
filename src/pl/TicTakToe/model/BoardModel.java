@@ -1,12 +1,15 @@
 package pl.TicTakToe.model;
 
+import pl.TicTakToe.view.BoardView;
+
 public class BoardModel {
     public final static int HEIGHT = 3;
     public final static int WIDTH = 3;
-    private final char[][] arrayBoard = new char[HEIGHT][WIDTH];     // poprawione
+    private final char[][] arrayBoard = new char[HEIGHT][WIDTH];
+    private final BoardView boardView = new BoardView();
     private int paramX, paramY;
 
-    public boolean setCoordinates(CharacterType character, char x, char y) { // czemu x i y to są char a nie int?
+    public boolean setCoordinates(CharacterType character, char x, char y) {
         if (checkForErrors(x, y)) {
             return false;
         } else {
@@ -22,20 +25,24 @@ public class BoardModel {
     /**
      * Sprawdza błędy
      *
-     * @param x         char // czemu char a nie int?
-     * @param y         char // czemu char a nie int?
+     * @param x         char
+     * @param y         char
      * @return boolean
      */
-    private boolean checkForErrors(char x, char y) { 
-        try {
-            Validator.checkCoordinate('X', x); //ta metoda nic nie zwraca, czy nie interesuje nas wynik walidacji w tym miejscu?
-            //noinspection SuspiciousNameCombination
-            Validator.checkCoordinate('Y', y);
-            paramX = (int) x - 65;
-            paramY = Character.getNumericValue(y) - 1;
-            Validator.checkIfExists(arrayBoard, paramX, paramY);
-        } catch (WrongParameter e) {
-            System.out.println(e.getMessage());
+    private boolean checkForErrors(char x, char y) {
+        if (Validator.isWrongCoordinate('X', x)) {
+            boardView.displayWrongCoordinates("Podano błędną współrzędną: " + x);
+            return true;
+        }
+        //noinspection SuspiciousNameCombination
+        if (Validator.isWrongCoordinate('Y', y)) {
+            boardView.displayWrongCoordinates("Podano błędną współrzędną: " + y);
+            return true;
+        }
+        paramX = (int) x - 65;
+        paramY = Character.getNumericValue(y) - 1;
+        if (Validator.checkIfExists(arrayBoard, paramX, paramY)) {
+            boardView.displayWrongCoordinates("W tym polu istnieje już wartość");
             return true;
         }
         return false;
